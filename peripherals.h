@@ -1,8 +1,9 @@
 #ifndef PERIPHERALS_H_
 #define PERIPHERALS_H_
 
-#include "stm32f4_rcc.h"
-#include "stm32f4_gpio.h"
+#include "./Platform/stm32f4_sys.h"
+#include "./Platform/stm32f4_rcc.h"
+#include "./Platform/stm32f4_gpio.h"
 
 //
 // LED Pin Assignment
@@ -32,6 +33,7 @@
 // Function
 //
 void LED_Init(void);
+void UART_Init(void);
 
 //
 // Macro

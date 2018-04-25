@@ -39,6 +39,11 @@ SECTIONS
     	. = ALIGN(4);
     } >FLASH
 
+    /*
+    *   Text Section
+    *
+    *   _exit for compiler
+    */
     .text :
     {
         . = ALIGN(4);
@@ -47,10 +52,13 @@ SECTIONS
         *(.rodata)
         *(.rodata*)
         . = ALIGN(4);
+        _exit = .;
     } >FLASH
 
     /*
     *   Use by the startup to initialize data
+    *
+    *   _sdata, _edata for startup code
     */
     _sidata = .;
 
@@ -66,17 +74,26 @@ SECTIONS
 
     /*
     *   Uninitialized data section
+    *
+    *   __bss_start__, __bss_end__ for compiler
+    *
+    *   _sbss, _ebss for startup code
     */
     .bss :
     {
         . = ALIGN(4);
         _sbss = .;
+        __bss_start__ = _sbss;
         *(.bss)
         *(.bss*)
         . = ALIGN(4);
         _ebss = .;
+        __bss_end__ = _ebss;
     } >RAM
 
+    /*
+    *   User Heap and User Stack
+    */
     ._user_heap_stack :
     {
         . = ALIGN(4);

@@ -34,5 +34,6 @@
 // Function
 //
 void Enable_RCC_AHB1(uint32_t module);
+void Enable_RCC_APB1(uint32_t module);
 
 #endif

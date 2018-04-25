@@ -19,6 +19,11 @@ typedef	long long			int64_t;
 //
 // define system variable
 //
-uint32_t SystemCoreClock = SYSCLK;
+uint32_t SystemCoreClock;
+
+//
+// Function
+//
+void SystemInit(void);
 
 #endif

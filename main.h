@@ -3,4 +3,9 @@
 
 #include "peripherals.h"
 
+//
+// Function
+//
+void Init_Peripherals(void);
+
 #endif
