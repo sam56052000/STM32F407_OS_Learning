@@ -30,6 +30,30 @@ void Gpio_Init(uint32_t group, uint32_t pin, uint32_t mode, uint32_t otype
 	*pupd_reg |= pupd << (pin << 1);
 }
 
+void Gpio_Alternate_Function_Setting(uint32_t group, uint32_t pin
+	, uint16_t function)
+{
+	uint32_t *AFRL_Reg = (uint32_t *)(group + GPIO_REG_AFRL_OFFSET);
+	uint32_t *AFRH_Reg = (uint32_t *)(group + GPIO_REG_AFRH_OFFSET);
+
+	uint32_t Pin_Offset = 0;
+
+	if(pin < 8)
+	{
+		Pin_Offset = 4 * pin;
+
+		*AFRL_Reg &= ~(0xF << Pin_Offset);
+		*AFRL_Reg |= (function << Pin_Offset);
+	}
+	else
+	{
+		Pin_Offset = 4 * (pin - 8);
+
+		*AFRH_Reg &= ~(0xF << Pin_Offset);
+		*AFRH_Reg |= (function << Pin_Offset);
+	}
+}
+
 void Gpio_Set(uint32_t group, uint32_t pin)
 {
 	uint32_t *ctrl_reg = (uint32_t *)(group + GPIO_REG_CTRL_OFFSET);

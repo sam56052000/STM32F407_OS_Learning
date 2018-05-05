@@ -23,6 +23,9 @@
 #define GPIO_REG_IN_DATA_OFFSET		0x10
 #define GPIO_REG_OUT_DATA_OFFSET	0x14
 #define GPIO_REG_CTRL_OFFSET		0x18
+#define GPIO_REG_LCKR_OFFEST		0x1C
+#define GPIO_REG_AFRL_OFFSET		0x20
+#define GPIO_REG_AFRH_OFFSET		0x24
 
 //
 // Gpio Mode Register
@@ -58,10 +61,18 @@
 #define GPIO_REG_PUPD_PULLDOWN		0x02
 
 //
+// Gpio Alternate Function Setting
+// stm32f407 mcu spec p272
+//
+#define GPIO_AF_USART3				0x07
+
+//
 // Function
 //
 void Gpio_Init(uint32_t group, uint32_t pin, uint32_t mode, uint32_t otype
 	, uint32_t speed, uint32_t pupd);
+void Gpio_Alternate_Function_Setting(uint32_t group, uint32_t pin
+	, uint16_t function);
 void Gpio_Set(uint32_t group, uint32_t pin);
 void Gpio_Reset(uint32_t group, uint32_t pin);
 void Gpio_Toggle(uint32_t group, uint32_t pin);

@@ -4,6 +4,7 @@
 #include "./Platform/stm32f4_sys.h"
 #include "./Platform/stm32f4_rcc.h"
 #include "./Platform/stm32f4_gpio.h"
+#include "./Platform/stm32f4_usart.h"
 
 //
 // LED Pin Assignment
@@ -34,6 +35,7 @@
 //
 void LED_Init(void);
 void UART_Init(void);
+void System_Init(void);
 
 //
 // Macro

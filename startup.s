@@ -83,7 +83,6 @@ FillZeroBssLoop:
 /*
 *	Call the Application entry Point
 */
-	bl  	SystemInit
 	bl		main
 	bx		lr
 

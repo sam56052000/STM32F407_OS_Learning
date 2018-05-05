@@ -1,5 +1,12 @@
 #include "peripherals.h"
 
+void System_Init(void)
+{
+	RCC_Set_Default();
+
+	RCC_Set_System_Clock();
+}
+
 void LED_Init(void)
 {
 	Enable_RCC_AHB1(RCC_REG_AHB1_GPIOD);
@@ -17,11 +24,25 @@ void LED_Init(void)
 void UART_Init(void)
 {
 	Enable_RCC_AHB1(RCC_REG_AHB1_GPIOC);
+	Enable_RCC_APB1(RCC_REG_APB1_USART3);
 
 	Gpio_Init(GPIOC, PIN_UART3_TX, GPIO_REG_MODE_FUNCTION, GPIO_REG_OTYPE_PP
 		, GPIO_REG_SPEED_FAST, GPIO_REG_PUPD_NONE);
 	Gpio_Init(GPIOC, PIN_UART3_RX, GPIO_REG_MODE_FUNCTION, GPIO_REG_OTYPE_PP
 		, GPIO_REG_SPEED_FAST, GPIO_REG_PUPD_NONE);
 
-	Enable_RCC_APB1(RCC_REG_APB1_USART3);
+	Gpio_Alternate_Function_Setting(GPIOC, PIN_UART3_TX, GPIO_AF_USART3);
+	Gpio_Alternate_Function_Setting(GPIOC, PIN_UART3_RX, GPIO_AF_USART3);
+
+    USART_BAISC_INIT_t UsartInitStruct;
+
+    UsartInitStruct.Baudrate = 57600;
+    UsartInitStruct.WordLength = USART_REG_INIT_WORD_LENGTH_8;
+    UsartInitStruct.StopBits = USART_REG_INIT_STOP_1_0;
+    UsartInitStruct.Pairty = USART_REG_INIT_PAIRTY_NO;
+    UsartInitStruct.Hw_Ctrl = USART_REG_HW_FLOW_CTRL_NONE;
+    UsartInitStruct.Mode = USART_REG_INIT_MODE_TX | USART_REG_INIT_MODE_RX;
+
+    Usart_Init_Register_Setting(USART3, &UsartInitStruct);
+    Usart_CMD(USART3, USART_ENABLE);
 }
