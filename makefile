@@ -56,13 +56,23 @@ LDLIBS += -Wl,--start-group -lm -Wl,--end-group
 #Compile Files=================================================================
 PLATFORM = ./Platform
 
-OBJS =	./startup.o \
-		./main.o \
-		./peripherals.o \
-		${PLATFORM}/stm32f4_sys.o \
-		${PLATFORM}/stm32f4_rcc.o \
-		${PLATFORM}/stm32f4_gpio.o \
-		${PLATFORM}/stm32f4_usart.o
+PLATFORM_FILE = \
+	${PLATFORM}/stm32f4_sys.o \
+	${PLATFORM}/stm32f4_rcc.o \
+	${PLATFORM}/stm32f4_gpio.o \
+	${PLATFORM}/stm32f4_usart.o
+
+BOOT = ./Boot
+
+BOOT_FILE = \
+	${BOOT}/startup.o \
+	${BOOT}/init.o \
+	${BOOT}/peripherals.o \
+	${BOOT}/boot.o\
+
+OBJS =	${BOOT_FILE} \
+		${PLATFORM_FILE} \
+		./main.o
 
 #Rule==========================================================================
 $(BIN_IMAGE):$(EXECUTABLE)

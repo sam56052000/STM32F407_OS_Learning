@@ -1,12 +1,12 @@
 /*
-*	Entry Point
+*   Entry Point
 */
-ENTRY(Reset_Handler)
+ENTRY(_VECTOR_RESET)
 
 /*
-*	Highest address of the user mode stack
+*   Highest address of the user mode stack
 *
-*	End of 128K RAM on AHB Bus
+*   End of 128K RAM on AHB Bus
 */
 _estack = 0x20020000;
 
@@ -17,32 +17,31 @@ min_user_stack_size = 0x400;
 min_user_heap_size = 0x0;
 
 /*
-*	Specify the memory areas
+*   Specify the memory areas
 */
 MEMORY
 {
-	FLASH(rx)	: ORIGIN = 0x08000000, LENGTH = 1024K
-	RAM(xrw)	: ORIGIN = 0x20000000, LENGTH = 192K
+    FLASH(rx)   : ORIGIN = 0x08000000, LENGTH = 1024K
+    RAM(xrw)    : ORIGIN = 0x20000000, LENGTH = 192K
 }
 
 /*
-*	Define Output Section
-*	
-*	Startup Code
+*   Define Output Section
 */
 SECTIONS
 {
-	.isr_vector :
-	{
-    	. = ALIGN(4);
-    	KEEP(*(.isr_vector))
-    	. = ALIGN(4);
+    /*
+    *   Startup Section
+    */
+    .isr_vector :
+    {
+        . = ALIGN(4);
+        KEEP(*(.isr_vector))
+        . = ALIGN(4);
     } >FLASH
 
     /*
     *   Text Section
-    *
-    *   _exit for compiler
     */
     .text :
     {
@@ -52,8 +51,12 @@ SECTIONS
         *(.rodata)
         *(.rodata*)
         . = ALIGN(4);
-        _exit = .;
     } >FLASH
+
+    /*
+    *   _exit for compiler
+    */
+    _exit = .;
 
     /*
     *   Use by the startup to initialize data
@@ -104,12 +107,12 @@ SECTIONS
     } >RAM
 
     /*
-    *	Remove information from the standard libraries
+    *   Remove information from the standard libraries
     */
-	/DISCARD/ :
-	{
-    	libc.a ( * )
-    	libm.a ( * )
-    	libgcc.a ( * )
-	}
+    /DISCARD/ :
+    {
+        libc.a ( * )
+        libm.a ( * )
+        libgcc.a ( * )
+    }
 }

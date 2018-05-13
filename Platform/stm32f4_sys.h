@@ -21,6 +21,12 @@ typedef	long long				int64_t;
 #define RESET					0
 
 //
+// Hardware Float Process Uint Address
+//
+#define HW_FLOAT_UNIT_ADDR		0xE000ED88
+#define HW_FLOAT_UNIT_ENABLE	(0xF<<20)
+
+//
 // System Configure Macro
 //
 #define SYS_CLK_HSE				8000000
@@ -56,5 +62,6 @@ uint32_t APB2Clock;
 // Function
 //
 void Flash_Register_Init(void);
+void HW_Float_Process_Unit_Enable(void);
 
 #endif
