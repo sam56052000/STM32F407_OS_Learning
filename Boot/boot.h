@@ -2,6 +2,7 @@
 #define BOOT_H_
 
 #include "peripherals.h"
+#include "print.h"
 
 //
 // Function
@@ -23,6 +24,7 @@ static init_func_t init_func[] =
 	STM32f407_Init_LED,
 	STM32f407_Init_UART,
 	Print_Boot_Data,
+	Test_Printk,
 	0
 };
 

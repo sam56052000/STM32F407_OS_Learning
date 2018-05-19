@@ -69,6 +69,7 @@ BOOT_FILE = \
 	${BOOT}/init.o \
 	${BOOT}/peripherals.o \
 	${BOOT}/boot.o\
+	${BOOT}/print.o
 
 OBJS =	${BOOT_FILE} \
 		${PLATFORM_FILE} \
