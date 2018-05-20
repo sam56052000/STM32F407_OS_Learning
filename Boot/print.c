@@ -103,7 +103,7 @@ uint32_t Format_Decode(char *fmt, uint32_t *flags)
 		case 'o':
 		{
 			SET_FORMAT_BASE(*flags, FORMAT_BASE_O);
-			SET_FORMAT_TYPE(*flags, FORMAT_TYPE_UINT);
+			SET_FORMAT_TYPE(*flags, FORMAT_TYPE_UINT32);
 		}
 		break;
 
@@ -111,22 +111,35 @@ uint32_t Format_Decode(char *fmt, uint32_t *flags)
 		case 'X':
 		{
 			SET_FORMAT_BASE(*flags, FORMAT_BASE_X);
-			SET_FORMAT_TYPE(*flags, FORMAT_TYPE_UINT);
+			SET_FORMAT_TYPE(*flags, FORMAT_TYPE_UINT32);
 		}
 		break;
 
 		case 'd':
 		case 'i':
 		{
-			SET_FORMAT_TYPE(*flags, FORMAT_TYPE_INT);
+			SET_FORMAT_TYPE(*flags, FORMAT_TYPE_INT32);
 			SET_FORMAT_BASE(*flags, FORMAT_BASE_D);
 		}
 		break;
 
 		case 'u':
 		{
-			SET_FORMAT_TYPE(*flags, FORMAT_TYPE_UINT);
+			SET_FORMAT_TYPE(*flags, FORMAT_TYPE_UINT32);
 			SET_FORMAT_BASE(*flags, FORMAT_BASE_D);
+		}
+		break;
+
+		case 'p':
+		{
+			SET_FORMAT_BASE(*flags, FORMAT_BASE_X);
+			SET_FORMAT_TYPE(*flags, FORMAT_TYPE_PTR);
+		}
+		break;
+
+		case '%':
+		{
+			SET_FORMAT_TYPE(*flags, FORMAT_TYPE_PERCENT);
 		}
 		break;
 
@@ -222,33 +235,46 @@ void VsnPrintf(char *buf, int32_t buf_size, char *fmt, va_list args)
 			}
 			break;
 
+			case FORMAT_TYPE_PERCENT:
+			{
+				//
+				//	Only need print one '%'
+				//
+				str -= 1;
+			}
+			break;
+
 			default:
 			{
 				str -= 2;
 
-				if(FORMAT_TYPE(flags) == FORMAT_TYPE_INT)
+				if(FORMAT_TYPE(flags) == FORMAT_TYPE_INT32)
 				{
 					num = VA_ARG(args, int32_t);
 				}
-				else if(FORMAT_TYPE(flags) == FORMAT_TYPE_UINT)
+				else if(FORMAT_TYPE(flags) == FORMAT_TYPE_UINT32)
 				{
 					num = VA_ARG(args, uint32_t);
 				}
-				else if(FORMAT_TYPE(flags) == FORMAT_TYPE_ULONG)
+				else if(FORMAT_TYPE(flags) == FORMAT_TYPE_UINT64)
 				{
 					num = VA_ARG(args, uint64_t);
 				}
-				else if(FORMAT_TYPE(flags) == FORMAT_TYPE_LONG)
+				else if(FORMAT_TYPE(flags) == FORMAT_TYPE_INT64)
 				{
 					num = VA_ARG(args, int64_t);
 				}
-				else if(FORMAT_TYPE(flags) == FORMAT_TYPE_USHORT)
+				else if(FORMAT_TYPE(flags) == FORMAT_TYPE_UINT16)
 				{
 					num = (uint16_t)VA_ARG(args, int16_t);
 				}
-				else if(FORMAT_TYPE(flags) == FORMAT_TYPE_SHORT)
+				else if(FORMAT_TYPE(flags) == FORMAT_TYPE_INT16)
 				{
 					num = (int16_t)VA_ARG(args, int16_t);
+				}
+				else if(FORMAT_TYPE(flags) == FORMAT_TYPE_PTR)
+				{
+					num = VA_ARG(args, uint32_t);
 				}
 				else
 				{
@@ -287,18 +313,4 @@ void printk(char *fmt, ...)
 	VA_END(args);
 
 	UART_Puts(print_buf);
-}
-
-void Test_Printk(void)
-{
-	char *s = "this is %s test";
-	char c = 'C';
-	int32_t d = -256;
-	int32_t x = 0x12345678;
-
-	printk("\nTesting printk:\n");
-	printk("Print Char: %c\n", c);
-	printk("Print String: %s\n", s);
-	printk("Print Dec: %d\n", d);
-	printk("Print Hex: %x\n", x);
 }

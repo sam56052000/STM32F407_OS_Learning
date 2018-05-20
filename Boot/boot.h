@@ -12,6 +12,7 @@ void STM32f407_Init_LED(void);
 void STM32f407_Init_UART(void);
 void Print_Boot_Data(void);
 void Platform_Boot(void);
+void Test_Printk(void);
 
 //
 // Init Function Pointer Structure

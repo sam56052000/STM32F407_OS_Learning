@@ -49,6 +49,21 @@ void STM32f407_Init_UART(void)
     Usart_CMD(USART3, USART_ENABLE);
 }
 
+void Test_Printk(void)
+{
+	char *s = "this is %s test";
+	char c = 'C';
+	int32_t d = -256;
+	int32_t x = 0x12345678;
+
+	printk("\nTesting printk %%:\n");
+	printk("Print Char: %c\n", c);
+	printk("Print Str : %s\n", s);
+	printk("Print Dec : %d\n", d);
+	printk("Print Hex : %x\n", x);
+	printk("Print Ptr : %p\n", &x);
+}
+
 void Platform_Boot(void)
 {
 	int i;
@@ -66,4 +81,7 @@ void Print_Boot_Data(void)
 	UART_Puts("                     STM32F407 OS Test Learning                     \n");
 	UART_Puts("====================================================================\n");
 	UART_Puts("Platform Boot Complete\n");
+
+	int32_t x = 0x12345678;
+	printk("Print Hex : %x%x\n", x,x);
 }

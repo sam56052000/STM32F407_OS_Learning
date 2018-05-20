@@ -20,7 +20,7 @@ char numbers[30];
 //	Va Arg     : Get the address(ap) of pop data, and convert into target type(t)
 //	Va End     : Reset the argv variable(ap)
 //
-#define INT_SIZEOF(n)	((sizeof(n)+sizeof(int)-1)&~(sizeof(int)-1))
+#define INT_SIZEOF(n)	((sizeof(n)+sizeof(uint32_t)-1)&~(sizeof(uint32_t)-1))
 #define VA_START(ap, v)	(ap=(va_list)&v+INT_SIZEOF(v))
 #define VA_ARG(ap, t)	(*(t*)((ap+=INT_SIZEOF(t))-INT_SIZEOF(t)))
 #define VA_END(ap)		(ap=(va_list)0)
@@ -52,14 +52,15 @@ char numbers[30];
 #define FORMAT_TYPE_NONE		0x0000
 #define FORMAT_TYPE_CHAR		0x0100
 #define FORMAT_TYPE_UCHAR		0x0200
-#define FORMAT_TYPE_SHORT		0x0300
-#define FORMAT_TYPE_USHORT		0x0400
-#define FORMAT_TYPE_INT			0x0500
-#define FORMAT_TYPE_UINT		0x0600
-#define FORMAT_TYPE_LONG		0x0700
-#define FORMAT_TYPE_ULONG		0x0800
+#define FORMAT_TYPE_INT16		0x0300
+#define FORMAT_TYPE_UINT16		0x0400
+#define FORMAT_TYPE_INT32		0x0500
+#define FORMAT_TYPE_UINT32		0x0600
+#define FORMAT_TYPE_INT64		0x0700
+#define FORMAT_TYPE_UINT64		0x0800
 #define FORMAT_TYPE_PTR			0x0A00
 #define FORMAT_TYPE_STR			0x0C00
+#define FORMAT_TYPE_PERCENT		0x1000
 
 #define FORMAT_TYPE(x)			((x)&FORMAT_TYPE_MASK)
 #define SET_FORMAT_TYPE(x,t)	(x)&=~FORMAT_TYPE_MASK;\
@@ -86,6 +87,5 @@ void VsnPrintf(char *buf, int32_t size, char *fmt, va_list args);
 uint32_t Format_Decode(char *fmt, uint32_t *flags);
 void memcopy(char *dest, char *src, uint16_t count);
 char *number(char *str, int32_t num, int32_t base, uint32_t flags);
-void Test_Printk(void);
 
 #endif
