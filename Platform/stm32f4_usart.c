@@ -48,6 +48,18 @@ void Usart_Init_Register_Setting(uint32_t group, USART_BAISC_INIT_t *Init_Reg)
     *baud = (Baud_I << 4) | Baud_F;
 }
 
+void Usart_Init_Interrupt(uint32_t group, uint32_t cmd, uint32_t type)
+{
+    uint32_t *Reg1 = (uint32_t *)(group + USART_REG_CTRL_1_OFFSET);
+
+    *Reg1 &= ~type;
+
+    if(cmd == ENABLE)
+    {
+        *Reg1 |= type;
+    }
+}
+
 void Usart_CMD(uint32_t group, uint32_t cmd)
 {
     uint32_t *Reg1 = (uint32_t *)(group + USART_REG_CTRL_1_OFFSET);
@@ -83,4 +95,13 @@ void Usart_Send_Data(uint32_t group, char data)
     while(Usart_StatusFlag(group, USART_FLAG_TXE) == RESET);
 
     *usart_data = (data & (uint16_t)0x01FF);
+}
+
+uint16_t Usart_Receive_Data(uint32_t group)
+{
+    uint16_t *usart_data = (uint16_t *)(group + USART_REG_DATA_OFFSET);
+
+    while(Usart_StatusFlag(group, USART_FLAG_RXNE) == RESET);
+
+    return *usart_data;
 }

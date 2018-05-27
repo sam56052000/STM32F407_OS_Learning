@@ -67,5 +67,6 @@ FillZeroBssLoop:
 */
 	bl		Platform_Boot
 	bl		main
+	bx		lr
 
 .size		_VECTOR_RESET, .-_VECTOR_RESET

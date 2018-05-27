@@ -54,6 +54,12 @@ LDFLAGS += -T ./linkerscript.ld
 LDLIBS += -Wl,--start-group -lm -Wl,--end-group
 
 #Compile Files=================================================================
+CORE = ./Core
+
+CORE_FILE = \
+	${CORE}/arm_cortex_m4.o \
+	${CORE}/arm_cortex_nvic.o
+
 PLATFORM = ./Platform
 
 PLATFORM_FILE = \
@@ -71,9 +77,11 @@ BOOT_FILE = \
 	${BOOT}/boot.o\
 	${BOOT}/print.o
 
-OBJS =	${BOOT_FILE} \
+OBJS =	${CORE_FILE} \
+		${BOOT_FILE} \
 		${PLATFORM_FILE} \
-		./main.o
+		./main.o \
+		./interrupt.o
 
 #Rule==========================================================================
 $(BIN_IMAGE):$(EXECUTABLE)

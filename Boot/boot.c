@@ -47,6 +47,14 @@ void STM32f407_Init_UART(void)
 
     Usart_Init_Register_Setting(USART3, &UsartInitStruct);
     Usart_CMD(USART3, USART_ENABLE);
+    Usart_Init_Interrupt(USART3, ENABLE, USART_REG_INT_RXNE);
+    
+    NVIC_Init(eEXT_NVIC_USART3, 1, 0, ENABLE);
+}
+
+void Init_Systick(void)
+{
+	Systick_Config(10500000);
 }
 
 void Test_Printk(void)
@@ -81,7 +89,4 @@ void Print_Boot_Data(void)
 	UART_Puts("                     STM32F407 OS Test Learning                     \n");
 	UART_Puts("====================================================================\n");
 	UART_Puts("Platform Boot Complete\n");
-
-	int32_t x = 0x12345678;
-	printk("Print Hex : %x%x\n", x,x);
 }

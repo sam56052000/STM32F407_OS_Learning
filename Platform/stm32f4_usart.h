@@ -54,6 +54,13 @@
 #define USART_DISABLE					0x0
 
 //
+// Interrupt Setting Flag
+//
+#define USART_REG_INT_RXNE				0x00000020
+#define USART_REG_INT_IDLE				0x00000010
+#define USART_REG_INT_TXE				0x00000080
+
+//
 // Usart Status Flag
 //
 #define USART_FLAG_RXNE					0x0020
@@ -143,9 +150,10 @@ typedef struct USART_BAISC_INIT_t
 // Function
 //
 void Usart_Init_Register_Setting(uint32_t group, USART_BAISC_INIT_t *Init_Reg);
+void Usart_Init_Interrupt(uint32_t group, uint32_t cmd, uint32_t type);
 void Usart_CMD(uint32_t group, uint32_t cmd);
 void Usart_Send_Data(uint32_t group, char data);
-void Usart_Recive_Data(uint32_t group);
+uint16_t Usart_Receive_Data(uint32_t group);
 uint32_t Usart_StatusFlag(uint32_t group, uint32_t flag);
 
 #endif

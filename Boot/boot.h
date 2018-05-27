@@ -13,6 +13,7 @@ void STM32f407_Init_UART(void);
 void Print_Boot_Data(void);
 void Platform_Boot(void);
 void Test_Printk(void);
+void Init_Systick(void);
 
 //
 // Init Function Pointer Structure
@@ -24,6 +25,7 @@ static init_func_t init_func[] =
 	STM32f407_Init_Clock,
 	STM32f407_Init_LED,
 	STM32f407_Init_UART,
+	Init_Systick,
 	Print_Boot_Data,
 	Test_Printk,
 	0
