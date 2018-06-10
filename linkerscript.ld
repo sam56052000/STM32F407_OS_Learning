@@ -22,7 +22,7 @@ min_user_heap_size = 0x0;
 MEMORY
 {
     FLASH(rx)   : ORIGIN = 0x08000000, LENGTH = 1024K
-    RAM(xrw)    : ORIGIN = 0x20000000, LENGTH = 192K
+    RAM(xrw)    : ORIGIN = 0x20000000, LENGTH = 16K
 }
 
 /*

@@ -43,6 +43,12 @@ uint32_t APB2Clock;
 #define FLASH_ACR_DCEN          0x00000400
 
 //
+//	Chip Memory Allocation
+//
+#define STM32F4_SRAM1_START		0x20000000
+#define STM32F4_SRAM2_START		0x2001C000
+
+//
 // Function
 //
 void Flash_Register_Init(void);

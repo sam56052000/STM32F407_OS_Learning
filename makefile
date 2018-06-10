@@ -81,7 +81,8 @@ OBJS =	${CORE_FILE} \
 		${BOOT_FILE} \
 		${PLATFORM_FILE} \
 		./main.o \
-		./interrupt.o
+		./interrupt.o \
+		./memory.o
 
 #Rule==========================================================================
 $(BIN_IMAGE):$(EXECUTABLE)
