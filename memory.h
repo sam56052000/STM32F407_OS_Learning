@@ -37,8 +37,8 @@ typedef struct page_t
 //
 void Init_List_Head(list_head_t *list);
 void List_Add(list_head_t *new_1st, list_head_t *prev, list_head_t *next);
-void Add_Front(list_head_t *new_1st, list_head_t *head);
-void Add_Rear(list_head_t *new_1st, list_head_t *head);
+void Add_Head(list_head_t *new_1st, list_head_t *head);
+void Add_Tail(list_head_t *new_1st, list_head_t *head);
 void List_Del(list_head_t *prev, list_head_t *next);
 void Del_Entry(list_head_t *entry);
 void List_Remove_Chain(list_head_t *ch, list_head_t *ct);
@@ -94,7 +94,7 @@ uint16_t IsListEmpty(list_head_t *head);
 //
 #define MAX_BUDDY_PAGE_NUM			(5)
 #define AVERAGE_PAGE_NUM_PER_BUDDY	(KERNEL_PAGE_NUM/MAX_BUDDY_PAGE_NUM)
-#define PAGE_NUM_FOR_MAX_BUDDY		((1<<MAX_BUDDY_PAGE_NUM)-1)
+#define PAGE_NUM_FOR_MAX_BUDDY		((1<<(MAX_BUDDY_PAGE_NUM-1))-1)
 
 struct list_head_t page_buddy[MAX_BUDDY_PAGE_NUM];
 
@@ -112,5 +112,21 @@ void Init_Page_Map(void);
 #define PAGE_PROTECT				0x02
 #define PAGE_BUDDY_BUSY				0x04
 #define PAGE_IN_CACHE				0x08
+
+#define BUDDY_END(x,order)			((x)+(1<<(order))-1)
+#define NEXT_BUDDY_START(x,order)	((x)+(1<<(order)))
+#define PREV_BUDDY_START(x,order)	((x)-(1<<(order)))
+
+//
+//	Buddy Assign Function
+//
+page_t* Get_Pages_from_List(int32_t order);
+void Put_Pages_to_List(page_t *pg, int32_t order);
+void *Page_Address(page_t *pg);
+page_t *Alloc_Pages(uint32_t flag, int32_t order);
+void Free_Pages(page_t *pg, int32_t order);
+void *Get_Free_Pages(int32_t flag, int32_t order);
+void Put_Free_Pages(void *addr, int32_t order);
+page_t *Virt_to_Page(uint32_t addr);
 
 #endif

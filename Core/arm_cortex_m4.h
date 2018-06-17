@@ -23,6 +23,8 @@ typedef	long long				int64_t;
 #define ENABLE					1
 #define DISABLE					0
 
+#define	NULL					((void *)0)
+
 //
 //	Systick define in arm-cortex maunal
 //

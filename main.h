@@ -5,4 +5,6 @@
 #include "interrupt.h"
 #include "memory.h"
 
+void OS_Main_Init(void);
+
 #endif
