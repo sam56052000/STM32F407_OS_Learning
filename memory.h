@@ -19,7 +19,7 @@ typedef struct page_t
 	uint32_t flags;
 	int32_t order;
 	uint32_t counter;
-	struct kmem_cache *cachep;
+	struct kmem_cache_t *cachep;
 	list_head_t list;
 
 } page_t;
@@ -128,5 +128,48 @@ void Free_Pages(page_t *pg, int32_t order);
 void *Get_Free_Pages(int32_t flag, int32_t order);
 void Put_Free_Pages(void *addr, int32_t order);
 page_t *Virt_to_Page(uint32_t addr);
+
+//
+//	Slab Define
+//
+#define KMEM_CACHE_DEFAULT_ORDER	(0)
+#define KMEM_CACHE_MAX_ORDER		(3)
+#define KMEM_CACHE_SAVE_RATE		(90)
+#define KMEM_CACHE_PERCENT			(100)
+#define KMEM_CACHE_MAX_WAST			(PAGE_SIZE-KMEM_CACHE_SAVE_RATE*PAGE_SIZE/KMEM_CACHE_PERCENT)
+
+typedef struct kmem_cache_t
+{
+	uint32_t obj_size;
+	uint32_t obj_nr;
+	uint32_t page_order;
+	uint32_t flags;
+	page_t *head_page;
+	page_t *end_page;
+	void *nf_block;
+
+} kmem_cache_t;
+
+int32_t Find_Right_Order(int32_t size);
+int32_t Kmem_Cache_Line_Object(void *head, int32_t size, int32_t order);
+kmem_cache_t *Kmem_Cache_Create(kmem_cache_t *cache, int32_t size, uint32_t flags);
+void Kmem_Cache_Destroy(kmem_cache_t *cache);
+void Kmem_Cache_Free(kmem_cache_t *cache, void *objp);
+void *Kmem_Cache_Alloc(kmem_cache_t *cache);
+
+//
+//	Kmalloc Function
+//
+#define KMALLOC_BIAS_SHIFT					(5)				//32byte minimal
+#define KMALLOC_MAX_SIZE					(256)
+#define KMALLOC_MINIMAL_SIZE_BIAS			(1<<(KMALLOC_BIAS_SHIFT))
+#define KMALLOC_CACHE_SIZE					(KMALLOC_MAX_SIZE/KMALLOC_MINIMAL_SIZE_BIAS)
+#define Kmalloc_Cache_Size_to_Index(size)	((((size))>>(KMALLOC_BIAS_SHIFT)))
+
+kmem_cache_t kmalloc_cache[KMALLOC_CACHE_SIZE];
+
+int32_t Kmalloc_Init(void);
+void *Kmalloc(uint32_t size);
+void Kfree(void *addr);
 
 #endif

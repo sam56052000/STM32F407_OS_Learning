@@ -1,5 +1,8 @@
 #include "memory.h"
 
+//
+//	Buddy Algorithm
+//
 void Init_List_Head(list_head_t *list)
 {
 	list -> next = list;
@@ -181,7 +184,7 @@ OUT_OK:
 
 void Put_Pages_to_List(page_t *pg, int32_t order)
 {
-	page_t *tprev,*tnext;
+	page_t *tprev,*tnext = NULL;
 
 	if( !(pg->flags & PAGE_BUDDY_BUSY) )
 	{
@@ -290,4 +293,181 @@ void *Get_Free_Pages(int32_t flag, int32_t order)
 void Put_Free_Pages(void *addr, int32_t order)
 {
 	Free_Pages(Virt_to_Page((uint32_t)addr), order);
+}
+
+//
+//	slab Algorithm
+//
+int32_t Find_Right_Order(int32_t size)
+{
+	int order;
+
+	for(order = 0; order <= KMEM_CACHE_MAX_ORDER; order++)
+	{
+		if( size <= (KMEM_CACHE_MAX_WAST)*(1<<order) )
+		{
+			return order;
+		}
+	}
+
+	if( size > (1<<order) )
+		return -1;
+
+	return order;
+}
+
+int32_t Kmem_Cache_Line_Object(void *head, int32_t size, int32_t order)
+{
+	void **pl;
+	char *p;
+	pl = (void **)head;
+	p = (char *)head + size;
+
+	int32_t i, s = PAGE_SIZE * (1<<order);
+
+	for(i = 0; s > size; i++, s -= size)
+	{
+		*pl = (void *)p;
+		pl = (void **)p;
+		p = p + size;
+	}
+
+	if(s == size)
+		i++;
+
+	// Need Add the Last slab to NULL
+
+	return i;
+}
+
+kmem_cache_t *Kmem_Cache_Create(kmem_cache_t *cache, int32_t size, uint32_t flags)
+{
+	void **nf_block = &(cache->nf_block);
+
+	int32_t order = Find_Right_Order(size);
+
+	if(order == -1)
+		return NULL;
+
+	if( (cache->head_page = Alloc_Pages(0,order)) == NULL)
+		return NULL;
+
+	*nf_block = Page_Address(cache->head_page);
+
+	cache->obj_nr = Kmem_Cache_Line_Object(*nf_block,size,order);
+	cache->obj_size = size;
+	cache->page_order = order;
+	cache->flags = flags;
+	cache->end_page = BUDDY_END(cache->head_page,order);
+	cache->end_page->list.next = NULL;
+
+	return cache;
+}
+
+void Kmem_Cache_Destroy(kmem_cache_t *cache)
+{
+	int32_t order = cache->page_order;
+	page_t *pg = cache->head_page;
+	list_head_t *list;
+
+	while(1)
+	{
+		list = BUDDY_END(pg,order)->list.next;
+		Free_Pages(pg,order);
+		
+		if(list)
+		{
+			pg = LIST_ENTRY(list, page_t, list);
+		}
+		else
+		{
+			return;
+		}
+	}
+}
+
+void Kmem_Cache_Free(kmem_cache_t *cache, void *objp)
+{
+	*(void **)objp = cache->nf_block;
+	cache->nf_block = objp;
+	cache->obj_nr++;
+}
+
+void *Kmem_Cache_Alloc(kmem_cache_t *cache)
+{
+	void *p;
+	page_t *pg;
+
+	if(cache == NULL)
+		return NULL;
+
+	void **nf_block = &(cache->nf_block);
+	uint32_t *nr = &(cache->obj_nr);
+	int32_t order = cache->page_order;
+
+	if(!*nr)
+	{
+		if( (pg = Alloc_Pages(0,order)) == NULL)
+			return NULL;
+
+		*nf_block = Page_Address(pg);
+		cache->end_page->list.next = &pg->list;
+		cache->end_page = BUDDY_END(pg,order);
+		cache->end_page->list.next = NULL;
+		*nr += Kmem_Cache_Line_Object(*nf_block, cache->obj_size, order);
+	}
+
+	(*nr)--;
+	p = *nf_block;
+	*nf_block = *(void **)p;
+	pg = Virt_to_Page((uint32_t)p);
+	pg->cachep = cache;
+
+	return p;
+}
+
+//
+//	Memory Allocation Algorithm
+//
+int32_t Kmalloc_Init(void)
+{
+	//
+	//	Kmalloc Struct Init
+	//
+	kmalloc_cache[0].obj_size = 0;
+	kmalloc_cache[0].obj_nr = 0;
+	kmalloc_cache[0].page_order = 0;
+	kmalloc_cache[0].flags = 0;
+	kmalloc_cache[0].head_page = NULL;
+	kmalloc_cache[0].end_page = NULL;
+	kmalloc_cache[0].nf_block = NULL;
+
+	int32_t i=0;
+
+	for(i = 0; i < KMALLOC_CACHE_SIZE; i++)
+	{
+		if(Kmem_Cache_Create(&kmalloc_cache[i], (i+1)*KMALLOC_MINIMAL_SIZE_BIAS,0) == NULL)
+			return -1;
+	}
+
+	return 0;
+}
+
+void *Kmalloc(uint32_t size)
+{
+	int32_t index = Kmalloc_Cache_Size_to_Index(size);
+
+	if(index >= KMALLOC_CACHE_SIZE)
+		return NULL;
+
+	return Kmem_Cache_Alloc(&kmalloc_cache[index]);
+}
+
+void Kfree(void *addr)
+{
+	page_t *pg;
+
+	pg = Virt_to_Page((uint32_t)addr);
+
+	Kmem_Cache_Free(pg->cachep, addr);
 }
