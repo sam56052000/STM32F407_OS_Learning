@@ -82,7 +82,8 @@ OBJS =	${CORE_FILE} \
 		${PLATFORM_FILE} \
 		./main.o \
 		./interrupt.o \
-		./memory.o
+		./memory.o \
+		./driver.o
 
 #Rule==========================================================================
 $(BIN_IMAGE):$(EXECUTABLE)
