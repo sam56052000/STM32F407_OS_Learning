@@ -18,8 +18,8 @@ struct storage_device_t
 	uint32_t sector_size;
 	uint32_t storage_szie;
 
-	int32_t (*Dout)(storage_device_t *sd, void *dest, uint32_t bias, uint32_t size);
-	int32_t (*Din)(storage_device_t *sd, void *dest, uint32_t bias, uint32_t size);
+	void (*Dout)(storage_device_t *sd, void *dest, uint32_t bias, uint32_t size);
+	void (*Din)(storage_device_t *sd, void *dest, uint32_t bias, uint32_t size);
 
 };
 
@@ -31,7 +31,7 @@ storage_device_t disk1, disk2, disk3;
 //
 void Disk_Init(void);
 void Disk_Clear(void);
-int32_t Disk_Data_Out(storage_device_t *sd, void *dest, uint32_t bias, uint32_t size);
-int32_t Disk_Data_In(storage_device_t *sd, void *dest, uint32_t bias, uint32_t size);
+void Disk_Data_Out(storage_device_t *sd, void *dest, uint32_t bias, uint32_t size);
+void Disk_Data_In(storage_device_t *sd, void *dest, uint32_t bias, uint32_t size);
 
 #endif

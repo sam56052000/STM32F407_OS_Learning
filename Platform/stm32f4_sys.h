@@ -109,6 +109,19 @@ void HW_Float_Process_Unit_Enable(void);
 #define FLASH_CR_SIZE32			0x00000200
 #define FLASH_CR_SIZE64			0x00000300
 
+#define FLASH_CR_SECTOR0		0x0000
+#define FLASH_CR_SECTOR1		0x0008
+#define FLASH_CR_SECTOR2		0x0010
+#define FLASH_CR_SECTOR3		0x0018
+#define FLASH_CR_SECTOR4		0x0020
+#define FLASH_CR_SECTOR5		0x0028
+#define FLASH_CR_SECTOR6		0x0030
+#define FLASH_CR_SECTOR7		0x0038
+#define FLASH_CR_SECTOR8		0x0040
+#define FLASH_CR_SECTOR9		0x0048
+#define FLASH_CR_SECTOR10		0x0050
+#define FLASH_CR_SECTOR11		0x0058
+
 //
 //	Chip Memory Allocation
 //

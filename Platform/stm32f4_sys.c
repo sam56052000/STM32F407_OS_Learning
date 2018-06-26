@@ -17,7 +17,7 @@ void Flash_Unlock(void)
 
 void Flash_Lock(void)
 {
-	volatile uint32_t *CR_Reg = (uint32_t *)(FLASH_REG_KEY);
+	volatile uint32_t *CR_Reg = (uint32_t *)(FLASH_REG_CR);
 
 	*CR_Reg |= FLASH_CR_LOCK;
 }
