@@ -75,7 +75,8 @@ BOOT_FILE = \
 	${BOOT}/init.o \
 	${BOOT}/peripherals.o \
 	${BOOT}/boot.o\
-	${BOOT}/print.o
+	${BOOT}/print.o \
+	${BOOT}/string.o
 
 OBJS =	${CORE_FILE} \
 		${BOOT_FILE} \
@@ -83,7 +84,8 @@ OBJS =	${CORE_FILE} \
 		./main.o \
 		./interrupt.o \
 		./memory.o \
-		./driver.o
+		./driver.o \
+		./filesystem.o
 
 #Rule==========================================================================
 $(BIN_IMAGE):$(EXECUTABLE)

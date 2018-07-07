@@ -19,6 +19,7 @@
 #define PIN_LED4		13
 #define PIN_LED5		14
 #define PIN_LED6		15
+#define PIN_BUTTON		0
 
 //
 // UART Pin Assignment
@@ -41,5 +42,7 @@ void UART_Puts(char *);
 #define LED_ON(LED_PIN)		Gpio_Set(GPIOD, LED_PIN)
 #define LED_OFF(LED_PIN)	Gpio_Reset(GPIOD, LED_PIN)
 #define LED_TOGGLE(LED_PIN)	Gpio_Toggle(GPIOD, LED_PIN)
+
+#define BUTTON_ACTIVE		Gpio_Read(GPIOA, PIN_BUTTON)
 
 #endif

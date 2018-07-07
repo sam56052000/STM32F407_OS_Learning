@@ -18,10 +18,12 @@ void USART3_IRQHandler(void)
 
     char Receive_Data = (char)(Usart_Receive_Data(USART3));
 
-    if( (Receive_Data > ' ') && (Receive_Data <= '~') )
-    {
-    	printk("Get Usart3 Data : %c\n", Receive_Data);
-    }
+    usart_FIFO[usart_front++] = Receive_Data;
     
     usart3_busy = 0;
+}
+
+void UART_Queue_Init(void)
+{
+    usart_front = 0;
 }

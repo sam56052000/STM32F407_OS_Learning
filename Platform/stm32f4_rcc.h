@@ -24,6 +24,8 @@
 // stm32f407 rcc AHB1 enable registers
 // stm32f407 mcu spec p242
 //
+#define RCC_REG_AHB1_GPIOA				(0x1<<0)
+#define RCC_REG_AHB1_GPIOB				(0x1<<1)
 #define RCC_REG_AHB1_GPIOC				(0x1<<2)
 #define RCC_REG_AHB1_GPIOD				(0x1<<3)
 

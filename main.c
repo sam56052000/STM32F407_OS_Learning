@@ -5,6 +5,9 @@ void OS_Main_Init(void)
 	Init_Page_Map();
 	Kmalloc_Init();
 	Disk_Init();
+	FileSystem_Init();
+
+	UART_Queue_Init();
 }
 
 int main(void)
@@ -14,32 +17,59 @@ int main(void)
 	LED_ON(PIN_LED5);
 	LED_ON(PIN_LED6);
 
-	uint32_t a[10], b[10], i;
+	uint32_t i;
 
+	uint32_t write_flash_flag = 0;
 	
-	a[0] = 0x12345678;
-	a[1] = 0x22345678;
-	a[2] = 0x32345678;
-	a[3] = 0x42345678;
-	a[4] = 0x52345678;
-	a[5] = 0x62345678;
-	a[6] = 0x72345678;
-	a[7] = 0x82345678;
-	a[8] = 0x92345678;
-	a[9] = 0xA2345678;
-
-	disk1.Din(&disk1, a, 0, sizeof(a));
-	disk1.Dout(&disk1, b, 0, sizeof(b));
-
-	for(i = 0; i < 10; i++)
-	{
-		printk("b[0]=%x\n", b[i]);
-	}
-	
-	printk("Start Run Main Loop");
+	printk("Start Run Main Loop\n");
 
 	while(1)
 	{
+		if(BUTTON_ACTIVE)
+		{
+			LED_TOGGLE(PIN_LED6);
+			write_flash_flag = 1;
+		}
 
+		if(write_flash_flag == 1)
+		{
+			for(i = 0; i < 10; i++)
+			{
+				printk("usart_FIFO=%x\n", usart_FIFO[i]);
+			}
+			printk("--------------------------\n");
+			printk("Addr=%p--------------------\n", &usart_FIFO);
+
+			Write_Data_to_Flash(&disk1);
+
+			write_flash_flag = 2;
+		}
+
+		if(write_flash_flag == 2)
+		{
+			write_flash_flag = 0;
+
+			inode_t *node;
+			char buf[128];
+			for(i= 0; i < 128; i++)
+			{
+				buf[i] = 0;
+			}
+			printk("aaa\n");
+
+			node = fs_type[ROMFS]->Namei(fs_type[ROMFS], "number.txt");
+			fs_type[ROMFS]->device->Dout(fs_type[ROMFS]->device, buf, fs_type[ROMFS]->Get_daddr(node), node->dsize);
+			for(i = 0; i < sizeof(buf); i++) {
+				printk("%c ",buf[i]);
+			}
+			printk("\n");
+		}
 	}
+}
+
+void Write_Data_to_Flash(storage_device_t *trg)
+{
+	disk1.Din(trg, usart_FIFO, 0, usart_front);
+
+	usart_front = 0;
 }
