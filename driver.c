@@ -2,6 +2,16 @@
 
 void Disk_Init(void)
 {
+	//
+	//	Init Storage System Structure
+	//
+	uint32_t i;
+
+	for(i = 0; i < MAX_DISK_NUM; i++)
+	{
+		storage[i] = NULL;
+	}
+
 	disk1.start_pos = DISK1_ADDRESS;
 	disk1.sector_size = 128;
 	disk1.storage_size = DISK_SIZE;

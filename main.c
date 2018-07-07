@@ -28,18 +28,12 @@ int main(void)
 		if(BUTTON_ACTIVE)
 		{
 			LED_TOGGLE(PIN_LED6);
+
 			write_flash_flag = 1;
 		}
 
 		if(write_flash_flag == 1)
 		{
-			for(i = 0; i < 10; i++)
-			{
-				printk("usart_FIFO=%x\n", usart_FIFO[i]);
-			}
-			printk("--------------------------\n");
-			printk("Addr=%p--------------------\n", &usart_FIFO);
-
 			Write_Data_to_Flash(&disk1);
 
 			write_flash_flag = 2;
@@ -55,7 +49,6 @@ int main(void)
 			{
 				buf[i] = 0;
 			}
-			printk("aaa\n");
 
 			node = fs_type[ROMFS]->Namei(fs_type[ROMFS], "number.txt");
 			fs_type[ROMFS]->device->Dout(fs_type[ROMFS]->device, buf, fs_type[ROMFS]->Get_daddr(node), node->dsize);

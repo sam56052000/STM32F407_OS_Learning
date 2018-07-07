@@ -3,7 +3,7 @@
 
 #include "./Boot/peripherals.h"
 
-#define MAX_DISK_NUM		3
+#define MAX_DISK_NUM		4
 #define DISK_1 				0
 #define RAM_1				1
 
