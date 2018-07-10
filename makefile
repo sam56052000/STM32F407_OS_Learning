@@ -85,7 +85,8 @@ OBJS =	${CORE_FILE} \
 		./interrupt.o \
 		./memory.o \
 		./driver.o \
-		./filesystem.o
+		./filesystem.o \
+		./exec.o
 
 #Rule==========================================================================
 $(BIN_IMAGE):$(EXECUTABLE)

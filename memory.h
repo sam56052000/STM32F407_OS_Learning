@@ -50,10 +50,11 @@ uint16_t IsListEmpty(list_head_t *head);
 //	Memory Boundary define STM32F4 spec
 //
 //	0x20000000 ~ 0x20003FFF : Golobal Data Ram(16K)
-//	0x20004000 ~ 0x2001BFFF : Memory can Assign(96K)
+//	0x20004000 ~ 0x20017FFF : Memory can Assign(80K)
+//	0x20018000 ~ 0x2001BFFF : Application RAM
 //	0x2001C000 ~ 0x2001FFFF : Stack Ram(16K)
 //
-#define _MEM_END			0x2001C000
+#define _MEM_END			0x20018000
 #define _MEM_START			0x20004000
 
 //

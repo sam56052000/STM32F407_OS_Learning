@@ -34,6 +34,14 @@ int main(void)
 
 		if(write_flash_flag == 1)
 		{
+			for(i = 0; i < 256; i++)
+			{
+				if(usart_FIFO[i] >= ' ' && usart_FIFO[i] <= '~')
+					printk("%d, %c\n",i,usart_FIFO[i]);
+				else
+					printk("%d, %x\n",i,usart_FIFO[i]);
+			}
+
 			Write_Data_to_Flash(&disk1);
 
 			write_flash_flag = 2;
@@ -44,18 +52,27 @@ int main(void)
 			write_flash_flag = 0;
 
 			inode_t *node;
-			char buf[128];
-			for(i= 0; i < 128; i++)
-			{
-				buf[i] = 0;
-			}
+			
 
-			node = fs_type[ROMFS]->Namei(fs_type[ROMFS], "number.txt");
-			fs_type[ROMFS]->device->Dout(fs_type[ROMFS]->device, buf, fs_type[ROMFS]->Get_daddr(node), node->dsize);
-			for(i = 0; i < sizeof(buf); i++) {
-				printk("%c ",buf[i]);
-			}
-			printk("\n");
+			// node = fs_type[ROMFS]->Namei(fs_type[ROMFS], "number.txt");
+			// fs_type[ROMFS]->device->Dout(fs_type[ROMFS]->device, buf, fs_type[ROMFS]->Get_daddr(node), node->dsize);
+			// for(i = 0; i < sizeof(buf); i++) {
+			// 	printk("%c ",buf[i]);
+			// }
+			// printk("\n");
+
+			void *buffer = (void *)APPLICATION_ADDRESS;
+
+			node = fs_type[ROMFS]->Namei(fs_type[ROMFS],"main.bin");
+
+			fs_type[ROMFS]->device->Dout(fs_type[ROMFS]->device,buffer,fs_type[ROMFS]->Get_daddr(node),node->dsize);
+
+			// for(i = 0; i < 128; i++) {
+			// 	printk("%c ",((char *)buffer)[i]);
+			// }
+			// printk("\n");
+
+			Execute_Application(buffer);
 		}
 	}
 }
