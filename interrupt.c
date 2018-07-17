@@ -23,6 +23,15 @@ void USART3_IRQHandler(void)
     usart3_busy = 0;
 }
 
+void Syscall_Interrupt_Handler(void)
+{
+	__asm__ __volatile__
+	(
+		"ldr r0, [sp]\n"
+		"b Syscall_Handler\n"
+	);
+}
+
 void UART_Queue_Init(void)
 {
     usart_front = 0;

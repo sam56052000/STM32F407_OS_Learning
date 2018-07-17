@@ -13,7 +13,8 @@ uint32_t usart3_busy;
 //
 void Systick_Interrupt_Handler(void);
 void USART3_IRQHandler(void);
-
 void UART_Queue_Init(void);
+
+void Syscall_Interrupt_Handler(void);
 
 #endif

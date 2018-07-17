@@ -23,6 +23,8 @@ int main(void)
 	
 	printk("Start Run Main Loop\n");
 
+	SystemCall(0);SystemCall(3);SystemCall(4);
+
 	while(1)
 	{
 		if(BUTTON_ACTIVE)

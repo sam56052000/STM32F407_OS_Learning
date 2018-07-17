@@ -86,7 +86,8 @@ OBJS =	${CORE_FILE} \
 		./memory.o \
 		./driver.o \
 		./filesystem.o \
-		./exec.o
+		./exec.o \
+		./systemcall.o
 
 #Rule==========================================================================
 $(BIN_IMAGE):$(EXECUTABLE)

@@ -31,8 +31,8 @@ Reset_Vector:
   .word		0                              //
   .word		0                              //
   .word		0                              //
-  .word		0                              //
-  .word		0                              //
+  .word		0                              // 
+  .word		Syscall_Interrupt_Handler      // System Service Call
   .word		0                              //
   .word		0                              //
   .word		0                              //
@@ -81,5 +81,51 @@ Reset_Vector:
   .word   0
   .word   0
   .word   USART3_IRQHandler                 // Usart3 IRQ Handler
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+  .word   0
+
+/*
+* User Define Software Interrupt Vector
+*/
 
 .size  Reset_Vector, .-Reset_Vector

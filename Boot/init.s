@@ -27,6 +27,7 @@
 .word _edata
 .word _sbss
 .word _ebss
+.word _stack_end
 
 .section	.text._VECTOR_RESET
 .type		_VECTOR_RESET, %function

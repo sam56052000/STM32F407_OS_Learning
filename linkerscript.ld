@@ -107,6 +107,7 @@ SECTIONS
         . = . + min_user_stack_size;
         . = . + min_user_heap_size;
         . = ALIGN(4);
+        _stack_end = .;
     } >RAM
 
     /*
