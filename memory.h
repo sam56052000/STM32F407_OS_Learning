@@ -51,7 +51,8 @@ uint16_t IsListEmpty(list_head_t *head);
 //
 //	0x20000000 ~ 0x20003FFF : Golobal Data Ram(16K)
 //	0x20004000 ~ 0x20017FFF : Memory can Assign(80K)
-//	0x20018000 ~ 0x2001BFFF : Application RAM
+//	0x20018000 ~ 0x20019FFF : Application RAM(8K)
+//	0x2001A000 ~ 0x2001BFFF : Task Stack RAM(8K)
 //	0x2001C000 ~ 0x2001FFFF : Stack Ram(16K)
 //
 #define _MEM_END			0x20018000

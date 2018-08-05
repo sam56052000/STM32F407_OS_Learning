@@ -27,3 +27,13 @@ void Systick_Config(uint32_t ticks)
 	//
 	Systick -> ctrl |= SYSTICK_REG_CTRL_CORECLK;
 }
+
+void Systick_Enable(void)
+{
+	Systick -> ctrl |= SYSTICK_REG_CTRL_TICKINT_EN;
+}
+
+void Systick_Disable(void)
+{
+	Systick -> ctrl &= ~SYSTICK_REG_CTRL_TICKINT_EN;
+}

@@ -57,5 +57,7 @@ typedef struct SYSTICK_t
 //	Function
 //
 void Systick_Config(uint32_t ticks);
+void Systick_Enable(void);
+void Systick_Disable(void);
 
 #endif
