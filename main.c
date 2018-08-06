@@ -126,13 +126,16 @@ void Main_Loop(void)
 {
 	while(1)
 	{
-		//printk("Original Thread\n");
+		printk("Original Thread\n");
 		LED_TOGGLE(PIN_LED6);
 	}
 }
 
 void Task_Function(uint32_t args)
 {
-	LED_TOGGLE(PIN_LED5);
-	printk("Run Task:%x\n", args);
+	while(1)
+	{
+		printk("Run Task:%x\n", args);
+		SystemCall(0);
+	}
 }

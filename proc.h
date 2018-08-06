@@ -12,6 +12,8 @@
 #define TASK_2				0x2001A800
 #define TASK_3				0x2001AC00
 
+#define STACK_MASK			0xFFFFFFF8
+
 typedef struct task_info_t task_info_t;
 
 struct task_info_t

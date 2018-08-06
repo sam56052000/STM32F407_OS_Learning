@@ -14,7 +14,8 @@ void SVC_Empty(void)
 
 void SVC0(void)
 {
-	printk("Execute the SVC0\n");
+	//printk("Execute the SVC0\n");
+	LED_TOGGLE(PIN_LED3);
 }
 
 void SVC1(void)
@@ -49,7 +50,7 @@ void Syscall_Handler(uint32_t exe)
 
 	if(SystemCall_FuncArray[exe] != SVC_Empty)
 	{
-		printk("Run the svc function: %d\n", exe);
+		//printk("Run the svc function: %d\n", exe);
 
 		SystemCall_FuncArray[exe]();
 	}
